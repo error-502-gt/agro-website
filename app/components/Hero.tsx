@@ -14,16 +14,30 @@ export default function Hero() {
     offset: ["start start", "end end"],
   });
 
-  // Capture video duration once metadata is loaded
+  // Capture video duration and prime playback for iOS Safari
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const onMeta = () => {
+    const init = () => {
       if (v.duration && Number.isFinite(v.duration)) setDuration(v.duration);
+      // iOS Safari: kick play() (allowed because muted) so the decoder warms
+      // up and frames become seekable, then immediately pause for scroll control.
+      const p = v.play();
+      if (p && typeof p.then === "function") {
+        p.then(() => v.pause()).catch(() => {
+          // Autoplay blocked — first scroll will trigger the seek anyway.
+        });
+      } else {
+        v.pause();
+      }
     };
-    if (v.readyState >= 1) onMeta();
-    v.addEventListener("loadedmetadata", onMeta);
-    return () => v.removeEventListener("loadedmetadata", onMeta);
+    if (v.readyState >= 1) init();
+    v.addEventListener("loadedmetadata", init);
+    v.addEventListener("loadeddata", init);
+    return () => {
+      v.removeEventListener("loadedmetadata", init);
+      v.removeEventListener("loadeddata", init);
+    };
   }, []);
 
   // Drive video.currentTime from scroll position — frame scrubbing
@@ -33,6 +47,8 @@ export default function Hero() {
     const seek = (progress: number) => {
       const v = videoRef.current;
       if (!v) return;
+      // If something restarted the video, hold it still while we scrub.
+      if (!v.paused) v.pause();
       const target = Math.max(0, Math.min(progress, 1)) * duration;
       // Avoid redundant seeks (browser throttles them anyway)
       if (Math.abs(v.currentTime - target) > 0.03) {
@@ -65,11 +81,21 @@ export default function Hero() {
           through the section's full 250vh, so currentTime maps to scroll. */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* VIDEO BACKGROUND — currentTime driven by scroll */}
+        {/* Poster as base layer — guarantees something visible on iOS Safari
+            even before the video can be decoded / autoplay is blocked. */}
+        <img
+          src="/corn-poster.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
         <video
           ref={videoRef}
+          autoPlay
           muted
           playsInline
           preload="auto"
+          poster="/corn-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover"
           aria-hidden="true"
         >
