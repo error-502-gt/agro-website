@@ -50,14 +50,36 @@ textarea {
   color: #17220a;
 }
 
-/* Hide Safari/macOS native play overlay on background videos
-   (the ghost play button that appears when autoplay is uncertain) */
+/* Hide every conceivable native control overlay on background videos.
+   Browsers paint a "play" overlay for paused/uncertain-autoplay videos;
+   we want none of it because the hero video is decorative. */
+video::-webkit-media-controls,
+video::-webkit-media-controls-enclosure,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-overlay-enclosure,
 video::-webkit-media-controls-overlay-play-button,
 video::-webkit-media-controls-start-playback-button,
-video::-webkit-media-controls {
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-fullscreen-button,
+video::-webkit-media-controls-mute-button,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display,
+video::-webkit-media-controls-toggle-closed-captions-button,
+video::-webkit-media-controls-timeline,
+video::-internal-media-controls-overlay-cast-button {
   display: none !important;
-  -webkit-appearance: none;
-  appearance: none;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+/* Some Chromium builds expose the cast/PiP overlay through a different
+   selector; this nukes any leftover button-like child of <video>. */
+video {
+  -webkit-mask-image: none;
 }
 
 /* Subtle scrollbar that fits the agro palette */

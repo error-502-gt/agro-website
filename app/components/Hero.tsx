@@ -14,56 +14,46 @@ export default function Hero() {
     offset: ["start start", "end end"],
   });
 
-  // Capture video duration and prime playback for iOS Safari
+  // Capture video duration. Try to autoplay (muted ⇒ allowed) and let it
+  // keep "playing" — we'll override currentTime every animation frame so it
+  // appears frozen at the scroll-mapped position. Keeping the video in a
+  // "playing" state prevents browsers from drawing a paused-video play overlay.
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const init = () => {
+    const onMeta = () => {
       if (v.duration && Number.isFinite(v.duration)) setDuration(v.duration);
-      // iOS Safari: kick play() (allowed because muted) so the decoder warms
-      // up and frames become seekable, then immediately pause for scroll control.
-      const p = v.play();
-      if (p && typeof p.then === "function") {
-        p.then(() => v.pause()).catch(() => {
-          // Autoplay blocked — first scroll will trigger the seek anyway.
-        });
-      } else {
-        v.pause();
-      }
     };
-    if (v.readyState >= 1) init();
-    v.addEventListener("loadedmetadata", init);
-    v.addEventListener("loadeddata", init);
+    if (v.readyState >= 1) onMeta();
+    v.addEventListener("loadedmetadata", onMeta);
+    v.addEventListener("loadeddata", onMeta);
+    // Belt + suspenders for autoplay (browser ignores if already playing).
+    v.play().catch(() => {});
     return () => {
-      v.removeEventListener("loadedmetadata", init);
-      v.removeEventListener("loadeddata", init);
+      v.removeEventListener("loadedmetadata", onMeta);
+      v.removeEventListener("loadeddata", onMeta);
     };
   }, []);
 
-  // Drive video.currentTime from scroll position — frame scrubbing
+  // RAF loop: every frame, pin currentTime to the scroll position. The video
+  // keeps "playing" so the browser never paints a paused-state play button,
+  // but the picture is effectively frozen at our seeked frame.
   useEffect(() => {
     if (!duration) return;
     let raf = 0;
-    const seek = (progress: number) => {
+    const tick = () => {
       const v = videoRef.current;
-      if (!v) return;
-      // If something restarted the video, hold it still while we scrub.
-      if (!v.paused) v.pause();
-      const target = Math.max(0, Math.min(progress, 1)) * duration;
-      // Avoid redundant seeks (browser throttles them anyway)
-      if (Math.abs(v.currentTime - target) > 0.03) {
-        v.currentTime = target;
+      if (v) {
+        const progress = scrollYProgress.get();
+        const target = Math.max(0, Math.min(progress, 1)) * duration;
+        if (Math.abs(v.currentTime - target) > 0.04) {
+          v.currentTime = target;
+        }
       }
+      raf = requestAnimationFrame(tick);
     };
-    const unsub = scrollYProgress.on("change", (p) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => seek(p));
-    });
-    seek(scrollYProgress.get());
-    return () => {
-      unsub();
-      cancelAnimationFrame(raf);
-    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [duration, scrollYProgress]);
 
   // Title fades and lifts as we scroll past the first ~half of the section
@@ -96,10 +86,12 @@ export default function Hero() {
           preload="auto"
           poster="/corn-poster.jpg"
           controls={false}
+          controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
           disablePictureInPicture
           disableRemotePlayback
           x-webkit-airplay="deny"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          tabIndex={-1}
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
           aria-hidden="true"
         >
           <source src="/corn-scrub.mp4" type="video/mp4" />
