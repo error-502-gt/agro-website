@@ -12,9 +12,9 @@ const stats = [
 
 export default function About() {
   return (
-    <section id="nosotros" className="relative py-24 lg:py-32 bg-cream overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section id="nosotros" className="relative py-16 md:py-24 lg:py-32 bg-cream overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -52,17 +52,17 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-8 flex flex-wrap gap-4"
+              className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
               <a
                 href="#contacto"
-                className="px-6 py-3 rounded-full bg-agro-700 text-cream font-semibold hover:bg-agro-800 transition shadow-md"
+                className="text-center px-6 py-3 rounded-full bg-agro-700 text-cream font-semibold hover:bg-agro-800 transition shadow-md"
               >
                 Conocer más
               </a>
               <a
                 href="#servicios"
-                className="px-6 py-3 rounded-full border-2 border-agro-700 text-agro-900 font-semibold hover:bg-agro-50 transition"
+                className="text-center px-6 py-3 rounded-full border-2 border-agro-700 text-agro-900 font-semibold hover:bg-agro-50 transition"
               >
                 Nuestros servicios
               </a>

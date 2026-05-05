@@ -39,15 +39,15 @@ export default function Contact() {
   return (
     <section
       id="contacto"
-      className="relative py-24 lg:py-32 bg-agro-950 text-cream overflow-hidden"
+      className="relative py-16 md:py-24 lg:py-32 bg-agro-950 text-cream overflow-hidden"
     >
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+      <div className="absolute inset-0 opacity-20 pointer-events-none hidden md:block">
         <div className="absolute top-20 right-20 w-96 h-96 rounded-full bg-earth-500 blur-3xl" />
         <div className="absolute bottom-20 left-20 w-80 h-80 rounded-full bg-agro-500 blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-14">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14">
           <div>
             <span className="text-agro-300 text-sm font-semibold tracking-[0.2em] uppercase">
               — Contáctanos
@@ -93,7 +93,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-agro-800/60 to-agro-900/60 backdrop-blur p-8 lg:p-10 rounded-3xl border border-agro-700/60"
+            className="bg-gradient-to-br from-agro-800/60 to-agro-900/60 backdrop-blur p-6 sm:p-8 lg:p-10 rounded-3xl border border-agro-700/60"
           >
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">

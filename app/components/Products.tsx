@@ -23,16 +23,16 @@ export default function Products() {
   return (
     <section
       id="productos"
-      className="relative py-24 lg:py-32 bg-agro-950 text-cream overflow-hidden"
+      className="relative py-16 md:py-24 lg:py-32 bg-agro-950 text-cream overflow-hidden"
     >
-      {/* decorative background blobs */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
+      {/* decorative background blobs (hidden on mobile to reduce blur cost) */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none hidden md:block">
         <div className="absolute top-20 left-20 w-72 h-72 rounded-full bg-agro-500 blur-3xl" />
         <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full bg-earth-500 blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10 md:mb-12">
           <div>
             <span className="text-agro-300 text-sm font-semibold tracking-[0.2em] uppercase">
               — Productos destacados
@@ -78,16 +78,16 @@ export default function Products() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, delay: (i % 6) * 0.05 }}
-                className="group relative bg-gradient-to-br from-agro-800/70 to-agro-900/70 backdrop-blur p-6 lg:p-7 rounded-3xl border border-agro-700/60 hover:border-agro-400 transition-all hover:-translate-y-1 hover:shadow-2xl"
+                className="group relative bg-gradient-to-br from-agro-800/70 to-agro-900/70 backdrop-blur p-5 sm:p-6 lg:p-7 rounded-3xl border border-agro-700/60 hover:border-agro-400 transition-all sm:hover:-translate-y-1 hover:shadow-2xl"
               >
                 {p.badge && (
-                  <span className="absolute top-5 right-5 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-earth-400 text-earth-950 text-xs font-bold z-10">
+                  <span className="absolute top-4 right-4 sm:top-5 sm:right-5 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-earth-400 text-earth-950 text-[10px] sm:text-xs font-bold z-10">
                     <Sparkles className="w-3 h-3" />
                     {p.badge}
                   </span>
                 )}
 
-                <div className="aspect-square rounded-2xl bg-gradient-to-br from-agro-600 to-agro-700 mb-5 flex items-center justify-center text-7xl shadow-inner">
+                <div className="aspect-[5/4] sm:aspect-square rounded-2xl bg-gradient-to-br from-agro-600 to-agro-700 mb-4 sm:mb-5 flex items-center justify-center text-6xl sm:text-7xl shadow-inner">
                   {cropEmoji[p.crop]}
                 </div>
 

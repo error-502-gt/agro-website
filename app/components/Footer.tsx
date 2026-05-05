@@ -30,8 +30,8 @@ const columns = [
 export default function Footer() {
   return (
     <footer className="bg-agro-950 text-cream/70 border-t border-agro-800">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14">
-        <div className="grid md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-10 md:py-14">
+        <div className="grid md:grid-cols-4 gap-8 md:gap-10">
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-5">
               <span className="flex items-center justify-center w-9 h-9 rounded-full bg-agro-300 text-agro-950">
@@ -77,7 +77,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 pt-7 border-t border-agro-800 flex flex-col md:flex-row gap-3 items-center justify-between text-xs">
+        <div className="mt-10 md:mt-12 pt-6 md:pt-7 border-t border-agro-800 flex flex-col md:flex-row gap-2 md:gap-3 items-center md:items-center justify-between text-xs text-center md:text-left">
           <p>© {new Date().getFullYear()} AgroRaíz, S.A. — Marca ficticia para portafolio.</p>
           <p className="opacity-70">
             Diseñado y construido con cariño desde el campo.

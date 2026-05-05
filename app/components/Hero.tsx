@@ -75,12 +75,11 @@ export default function Hero() {
     <section
       id="inicio"
       ref={sectionRef}
-      className="relative h-[250vh] bg-agro-950"
+      className="relative h-[170vh] md:h-[250vh] bg-agro-950"
     >
       {/* Sticky stage — keeps the video pinned to viewport while we scroll
-          through the section's full 250vh, so currentTime maps to scroll. */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* VIDEO BACKGROUND — currentTime driven by scroll */}
+          through the section, so currentTime maps to scroll position. */}
+      <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
         {/* Poster as base layer — guarantees something visible on iOS Safari
             even before the video can be decoded / autoplay is blocked. */}
         <img
@@ -105,7 +104,7 @@ export default function Hero() {
         {/* Vignette / dark gradient for text legibility */}
         <div
           aria-hidden
-          className="absolute inset-0 pointer-events-none bg-gradient-to-b from-agro-950/55 via-agro-950/15 to-agro-950/85"
+          className="absolute inset-0 pointer-events-none bg-gradient-to-b from-agro-950/55 via-agro-950/20 to-agro-950/85"
         />
         <div
           aria-hidden
@@ -115,15 +114,15 @@ export default function Hero() {
         {/* Title overlay */}
         <motion.div
           style={{ y: titleY, opacity: titleOpacity }}
-          className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
+          className="absolute inset-0 flex flex-col items-center justify-center text-center px-5 md:px-6"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cream/15 backdrop-blur-md border border-cream/30 text-cream text-xs lg:text-sm font-medium tracking-[0.2em] uppercase mb-6 shadow-lg"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream/15 backdrop-blur-md border border-cream/30 text-cream text-[10px] sm:text-xs lg:text-sm font-medium tracking-[0.2em] uppercase mb-4 sm:mb-6 shadow-lg"
           >
-            <Leaf className="w-3.5 h-3.5" />
+            <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             Agroservicios desde 2001
           </motion.span>
 
@@ -131,11 +130,11 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="font-display text-5xl md:text-7xl lg:text-8xl text-cream leading-[1.05] max-w-5xl"
+            className="font-display text-[2.4rem] sm:text-5xl md:text-7xl lg:text-8xl text-cream leading-[1.1] sm:leading-[1.05] max-w-5xl"
             style={{ textShadow: "0 4px 30px rgba(0,0,0,0.55)" }}
           >
             Cultivamos tu cosecha
-            <span className="block italic font-normal text-agro-200 mt-2">
+            <span className="block italic font-normal text-agro-200 mt-1 sm:mt-2">
               desde la raíz
             </span>
           </motion.h1>
@@ -144,7 +143,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="mt-7 max-w-2xl text-cream/95 text-base md:text-lg lg:text-xl font-light leading-relaxed"
+            className="mt-5 sm:mt-7 max-w-2xl text-cream/95 text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed"
             style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
           >
             Insumos certificados, semillas mejoradas, fertilizantes y asesoría
@@ -155,17 +154,17 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
+            className="mt-7 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-full max-w-xs sm:max-w-none mx-auto sm:w-auto"
           >
             <a
               href="#productos"
-              className="px-7 py-3.5 rounded-full bg-agro-600 hover:bg-agro-700 text-cream font-semibold shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-agro-600 hover:bg-agro-700 text-cream font-semibold shadow-xl hover:shadow-2xl sm:hover:-translate-y-0.5 transition-all text-center"
             >
               Ver productos
             </a>
             <a
               href="#contacto"
-              className="px-7 py-3.5 rounded-full bg-cream/10 backdrop-blur border-2 border-cream/70 text-cream font-semibold hover:bg-cream/25 transition-all"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-cream/10 backdrop-blur border-2 border-cream/70 text-cream font-semibold hover:bg-cream/25 transition-all text-center"
             >
               Hablar con un agrónomo
             </a>
@@ -175,7 +174,7 @@ export default function Hero() {
         {/* Scroll cue */}
         <motion.div
           style={{ opacity: cueOpacity }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-cream/85 flex flex-col items-center gap-1.5"
+          className="absolute bottom-5 sm:bottom-10 left-1/2 -translate-x-1/2 text-cream/85 flex flex-col items-center gap-1.5"
         >
           <span
             className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-semibold"

@@ -29,9 +29,9 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="relative py-24 lg:py-32 bg-gradient-to-b from-agro-50 to-cream">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+    <section className="relative py-16 md:py-24 lg:py-32 bg-gradient-to-b from-agro-50 to-cream">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -61,13 +61,13 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="relative p-8 rounded-3xl bg-cream border border-agro-200 hover:border-agro-400 hover:shadow-xl transition-all"
+              className="relative p-6 sm:p-8 rounded-3xl bg-cream border border-agro-200 hover:border-agro-400 hover:shadow-xl transition-all"
             >
-              <Quote className="w-10 h-10 text-agro-300 mb-4" />
-              <p className="text-agro-900 leading-relaxed font-display text-lg italic">
+              <Quote className="w-8 h-8 sm:w-10 sm:h-10 text-agro-300 mb-3 sm:mb-4" />
+              <p className="text-agro-900 leading-relaxed font-display text-base sm:text-lg italic">
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <div className="mt-7 pt-6 border-t border-agro-200 flex items-center gap-3">
+              <div className="mt-6 sm:mt-7 pt-5 sm:pt-6 border-t border-agro-200 flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-agro-600 to-agro-800 text-cream font-display text-lg flex items-center justify-center">
                   {t.initials}
                 </div>

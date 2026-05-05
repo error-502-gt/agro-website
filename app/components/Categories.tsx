@@ -49,9 +49,9 @@ const categories = [
 
 export default function Categories() {
   return (
-    <section className="relative py-24 lg:py-32 bg-gradient-to-b from-cream via-agro-50 to-cream">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+    <section className="relative py-16 md:py-24 lg:py-32 bg-gradient-to-b from-cream via-agro-50 to-cream">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -92,17 +92,17 @@ export default function Categories() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.07 }}
-              className="group relative p-7 lg:p-8 rounded-3xl bg-cream border border-agro-200 hover:border-agro-500 hover:bg-gradient-to-br hover:from-agro-700 hover:to-agro-800 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl"
+              className="group relative p-5 sm:p-7 lg:p-8 rounded-3xl bg-cream border border-agro-200 hover:border-agro-500 hover:bg-gradient-to-br hover:from-agro-700 hover:to-agro-800 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl"
             >
-              <div className="absolute -top-8 -right-8 text-9xl opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-700 select-none">
+              <div className="absolute -top-8 -right-8 text-8xl sm:text-9xl opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-700 select-none">
                 {c.emoji}
               </div>
               <div className="relative">
-                <div className="text-5xl mb-4">{c.emoji}</div>
-                <h3 className="font-display text-2xl lg:text-3xl text-agro-950 group-hover:text-cream transition-colors">
+                <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">{c.emoji}</div>
+                <h3 className="font-display text-xl sm:text-2xl lg:text-3xl text-agro-950 group-hover:text-cream transition-colors">
                   {c.name}
                 </h3>
-                <p className="mt-3 text-sm text-agro-800/70 group-hover:text-cream/85 transition-colors leading-relaxed">
+                <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-agro-800/70 group-hover:text-cream/85 transition-colors leading-relaxed">
                   {c.desc}
                 </p>
                 <div className="mt-5 flex items-center justify-between">
