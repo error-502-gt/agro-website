@@ -95,7 +95,11 @@ export default function Hero() {
           playsInline
           preload="auto"
           poster="/corn-poster.jpg"
-          className="absolute inset-0 w-full h-full object-cover"
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
+          x-webkit-airplay="deny"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           aria-hidden="true"
         >
           <source src="/corn-scrub.mp4" type="video/mp4" />

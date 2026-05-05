@@ -50,6 +50,16 @@ textarea {
   color: #17220a;
 }
 
+/* Hide Safari/macOS native play overlay on background videos
+   (the ghost play button that appears when autoplay is uncertain) */
+video::-webkit-media-controls-overlay-play-button,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls {
+  display: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 /* Subtle scrollbar that fits the agro palette */
 ::-webkit-scrollbar {
   width: 10px;
