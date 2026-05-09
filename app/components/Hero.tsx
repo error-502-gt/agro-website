@@ -7,6 +7,7 @@ import { ChevronDown, Leaf } from "lucide-react";
 export default function Hero() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [duration, setDuration] = useState(0);
 
   const { scrollYProgress } = useScroll({
@@ -14,20 +15,19 @@ export default function Hero() {
     offset: ["start start", "end end"],
   });
 
-  // Capture video duration. Try to autoplay (muted ⇒ allowed) and let it
-  // keep "playing" — we'll override currentTime every animation frame so it
-  // appears frozen at the scroll-mapped position. Keeping the video in a
-  // "playing" state prevents browsers from drawing a paused-video play overlay.
+  // Setup the off-screen <video>: load metadata, force-mute via JS (iOS),
+  // try to start playback. The video is positioned off-screen so the
+  // browser cannot paint any native play/cast overlays on top of the page.
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+    v.muted = true;
     const onMeta = () => {
       if (v.duration && Number.isFinite(v.duration)) setDuration(v.duration);
     };
     if (v.readyState >= 1) onMeta();
     v.addEventListener("loadedmetadata", onMeta);
     v.addEventListener("loadeddata", onMeta);
-    // Belt + suspenders for autoplay (browser ignores if already playing).
     v.play().catch(() => {});
     return () => {
       v.removeEventListener("loadedmetadata", onMeta);
@@ -35,19 +35,36 @@ export default function Hero() {
     };
   }, []);
 
-  // RAF loop: every frame, pin currentTime to the scroll position. The video
-  // keeps "playing" so the browser never paints a paused-state play button,
-  // but the picture is effectively frozen at our seeked frame.
+  // RAF loop: pin currentTime to scroll position AND draw the current
+  // video frame onto a <canvas> that the user actually sees. The canvas
+  // is just pixels — no native browser controls can attach to it.
   useEffect(() => {
     if (!duration) return;
+    const v = videoRef.current;
+    const c = canvasRef.current;
+    if (!v || !c) return;
+    const ctx = c.getContext("2d", { alpha: false });
+    if (!ctx) return;
+
     let raf = 0;
     const tick = () => {
-      const v = videoRef.current;
-      if (v) {
-        const progress = scrollYProgress.get();
-        const target = Math.max(0, Math.min(progress, 1)) * duration;
-        if (Math.abs(v.currentTime - target) > 0.04) {
-          v.currentTime = target;
+      const progress = scrollYProgress.get();
+      const target = Math.max(0, Math.min(progress, 1)) * duration;
+      if (Math.abs(v.currentTime - target) > 0.04) {
+        v.currentTime = target;
+      }
+      // Match canvas bitmap to video native size on first frame.
+      const vw = v.videoWidth;
+      const vh = v.videoHeight;
+      if (vw > 0 && (c.width !== vw || c.height !== vh)) {
+        c.width = vw;
+        c.height = vh;
+      }
+      if (vw > 0) {
+        try {
+          ctx.drawImage(v, 0, 0, c.width, c.height);
+        } catch {
+          // ignore; first frames may not yet be ready
         }
       }
       raf = requestAnimationFrame(tick);
@@ -78,24 +95,44 @@ export default function Hero() {
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover"
         />
+        {/* Off-screen <video> — provides decoded frames for the canvas.
+            Hidden via clip + tiny size + opacity so iOS Safari cannot draw
+            its play / cast / fullscreen overlays where the user can see them. */}
         <video
           ref={videoRef}
           autoPlay
           muted
           playsInline
           preload="auto"
-          poster="/corn-poster.jpg"
           controls={false}
           controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
           disablePictureInPicture
           disableRemotePlayback
           x-webkit-airplay="deny"
           tabIndex={-1}
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
           aria-hidden="true"
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            opacity: 0,
+            pointerEvents: "none",
+            top: 0,
+            left: 0,
+            clipPath: "inset(50%)",
+          }}
         >
           <source src="/corn-scrub.mp4" type="video/mp4" />
         </video>
+
+        {/* Visible canvas — renders the video frames as plain pixels.
+            No native player UI can attach to a <canvas>. */}
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full pointer-events-none select-none"
+          style={{ objectFit: "cover" }}
+        />
 
         {/* Vignette / dark gradient for text legibility */}
         <div
