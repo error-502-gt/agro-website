@@ -3,17 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { products, type Crop } from "../data/products";
-import {
-  ShoppingBag,
-  Sparkles,
-  Wheat,
-  Coffee,
-  Sprout,
-  Salad,
-  TreePalm,
-  Apple,
-  type LucideIcon,
-} from "lucide-react";
+import { cropIcon } from "./CropIcons";
+import { ShoppingBag, Sparkles } from "lucide-react";
 
 const tabs: { id: Crop | "all"; label: string }[] = [
   { id: "all", label: "Todos" },
@@ -24,17 +15,6 @@ const tabs: { id: Crop | "all"; label: string }[] = [
   { id: "cana", label: "Caña" },
   { id: "aguacate", label: "Aguacate" },
 ];
-
-// Lucide icons replace the original emojis. They render at any size,
-// stay crisp on retina screens, and feel more "B2B" than emoji.
-const cropIcon: Record<Crop, LucideIcon> = {
-  maiz: Wheat,
-  cafe: Coffee,
-  frijol: Sprout,
-  hortalizas: Salad,
-  cana: TreePalm,
-  aguacate: Apple,
-};
 
 export default function Products() {
   const [active, setActive] = useState<Crop | "all">("all");

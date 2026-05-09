@@ -1,47 +1,48 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { cropIcon } from "./CropIcons";
+import type { Crop } from "../data/products";
 
-const categories = [
+const categories: Array<{
+  id: Crop;
+  name: string;
+  count: string;
+  desc: string;
+}> = [
   {
     id: "maiz",
     name: "Maíz",
-    emoji: "🌽",
     count: "32 productos",
     desc: "Híbridos, fertilizantes y herbicidas para granos básicos.",
   },
   {
     id: "cafe",
     name: "Café",
-    emoji: "☕",
     count: "28 productos",
     desc: "Foliares, fungicidas y nutrición especializada.",
   },
   {
     id: "frijol",
     name: "Frijol",
-    emoji: "🫘",
     count: "19 productos",
     desc: "Semilla certificada e inoculantes biológicos.",
   },
   {
     id: "hortalizas",
     name: "Hortalizas",
-    emoji: "🥬",
     count: "41 productos",
     desc: "Sustratos, bandejas y manejo integrado de plagas.",
   },
   {
     id: "cana",
     name: "Caña de azúcar",
-    emoji: "🎋",
     count: "14 productos",
     desc: "Madurantes, urea y nutrición de gran escala.",
   },
   {
     id: "aguacate",
     name: "Aguacate",
-    emoji: "🥑",
     count: "22 productos",
     desc: "Foliares premium y manejo fitosanitario del fruto.",
   },
@@ -84,38 +85,46 @@ export default function Categories() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 lg:gap-6">
-          {categories.map((c, i) => (
-            <motion.a
-              key={c.id}
-              href="#productos"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
-              className="group relative p-5 sm:p-7 lg:p-8 rounded-3xl bg-cream border border-agro-200 hover:border-agro-500 hover:bg-gradient-to-br hover:from-agro-700 hover:to-agro-800 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl"
-            >
-              <div className="absolute -top-8 -right-8 text-8xl sm:text-9xl opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-700 select-none">
-                {c.emoji}
-              </div>
-              <div className="relative">
-                <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">{c.emoji}</div>
-                <h3 className="font-display text-xl sm:text-2xl lg:text-3xl text-agro-950 group-hover:text-cream transition-colors">
-                  {c.name}
-                </h3>
-                <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-agro-800/70 group-hover:text-cream/85 transition-colors leading-relaxed">
-                  {c.desc}
-                </p>
-                <div className="mt-5 flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-agro-600 group-hover:text-agro-200 transition-colors">
-                    {c.count}
-                  </span>
-                  <span className="w-9 h-9 rounded-full bg-agro-100 group-hover:bg-cream flex items-center justify-center text-agro-700 group-hover:translate-x-1 transition-all">
-                    →
-                  </span>
+          {categories.map((c, i) => {
+            const Icon = cropIcon[c.id];
+            return (
+              <motion.a
+                key={c.id}
+                href="#productos"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className="group relative p-5 sm:p-7 lg:p-8 rounded-3xl bg-cream border border-agro-200 hover:border-agro-500 hover:bg-gradient-to-br hover:from-agro-700 hover:to-agro-800 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl"
+              >
+                {/* Faded watermark icon — anchored top-right, scales on hover */}
+                <Icon
+                  className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 w-28 h-28 sm:w-40 sm:h-40 text-agro-700/12 group-hover:text-cream/25 group-hover:scale-110 transition-all duration-700 pointer-events-none select-none"
+                  strokeWidth={1.2}
+                />
+                <div className="relative">
+                  <Icon
+                    className="w-9 h-9 sm:w-12 sm:h-12 text-agro-700 group-hover:text-cream mb-3 sm:mb-4 transition-colors"
+                    strokeWidth={1.5}
+                  />
+                  <h3 className="font-display text-xl sm:text-2xl lg:text-3xl text-agro-950 group-hover:text-cream transition-colors">
+                    {c.name}
+                  </h3>
+                  <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-agro-800/70 group-hover:text-cream/85 transition-colors leading-relaxed">
+                    {c.desc}
+                  </p>
+                  <div className="mt-5 flex items-center justify-between">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-agro-600 group-hover:text-agro-200 transition-colors">
+                      {c.count}
+                    </span>
+                    <span className="w-9 h-9 rounded-full bg-agro-100 group-hover:bg-cream flex items-center justify-center text-agro-700 group-hover:translate-x-1 transition-all">
+                      →
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </motion.a>
-          ))}
+              </motion.a>
+            );
+          })}
         </div>
       </div>
     </section>
