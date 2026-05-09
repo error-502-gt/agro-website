@@ -73,10 +73,33 @@ export default function Hero() {
     return () => cancelAnimationFrame(raf);
   }, [duration, scrollYProgress]);
 
-  // Title fades and lifts as we scroll past the first ~half of the section
-  const titleY = useTransform(scrollYProgress, [0.8, 1], ["0%", "-25%"]);
-  const titleOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
-  const cueOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+  // Three slides cross-fade across the scroll: promise → process → results.
+  // Each band overlaps slightly so transitions feel like a soft hand-off.
+  const cueOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
+
+  // SLIDE 1 — visible 0 → 0.30, fades out 0.25 → 0.32, lifts up gently
+  const s1Opacity = useTransform(
+    scrollYProgress,
+    [0, 0.22, 0.32],
+    [1, 1, 0]
+  );
+  const s1Y = useTransform(scrollYProgress, [0, 0.32], ["0%", "-12%"]);
+
+  // SLIDE 2 — fades in 0.30 → 0.38, holds 0.38 → 0.58, fades out 0.58 → 0.66
+  const s2Opacity = useTransform(
+    scrollYProgress,
+    [0.28, 0.38, 0.58, 0.66],
+    [0, 1, 1, 0]
+  );
+  const s2Y = useTransform(scrollYProgress, [0.28, 0.66], ["12%", "-12%"]);
+
+  // SLIDE 3 — fades in 0.62 → 0.72, holds 0.72 → 0.90, fades out 0.90 → 1.0
+  const s3Opacity = useTransform(
+    scrollYProgress,
+    [0.62, 0.72, 0.9, 1],
+    [0, 1, 1, 0]
+  );
+  const s3Y = useTransform(scrollYProgress, [0.62, 1], ["12%", "-12%"]);
 
   return (
     <section
@@ -144,9 +167,9 @@ export default function Hero() {
           className="absolute inset-0 pointer-events-none bg-gradient-to-r from-agro-950/40 via-transparent to-agro-950/40"
         />
 
-        {/* Title overlay */}
+        {/* SLIDE 1 — Promesa (con CTAs, animación de entrada inicial) */}
         <motion.div
-          style={{ y: titleY, opacity: titleOpacity }}
+          style={{ opacity: s1Opacity, y: s1Y }}
           className="absolute inset-0 flex flex-col items-center justify-center text-center px-5 md:px-6"
         >
           <motion.span
@@ -179,8 +202,8 @@ export default function Hero() {
             className="mt-5 sm:mt-7 max-w-2xl text-cream/95 text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed"
             style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
           >
-            Insumos certificados, semillas mejoradas, fertilizantes y asesoría
-            técnica para que cada parcela rinda lo que merece.
+            Insumos certificados, semillas mejoradas y asesoría técnica para
+            que cada parcela rinda lo que merece.
           </motion.p>
 
           <motion.div
@@ -202,6 +225,64 @@ export default function Hero() {
               Hablar con un agrónomo
             </a>
           </motion.div>
+        </motion.div>
+
+        {/* SLIDE 2 — Proceso */}
+        <motion.div
+          style={{ opacity: s2Opacity, y: s2Y }}
+          className="absolute inset-0 flex flex-col items-center justify-center text-center px-5 md:px-6"
+        >
+          <span
+            className="text-agro-200 text-[10px] sm:text-xs lg:text-sm font-semibold tracking-[0.3em] uppercase mb-4 sm:mb-6"
+            style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+          >
+            — De la semilla al surco
+          </span>
+          <h2
+            className="font-display text-[2.4rem] sm:text-5xl md:text-7xl lg:text-8xl text-cream leading-[1.1] sm:leading-[1.05] max-w-5xl"
+            style={{ textShadow: "0 4px 30px rgba(0,0,0,0.55)" }}
+          >
+            En cada etapa,
+            <span className="block italic font-normal text-agro-200 mt-1 sm:mt-2">
+              contigo en el campo.
+            </span>
+          </h2>
+          <p
+            className="mt-5 sm:mt-7 max-w-2xl text-cream/95 text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed"
+            style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+          >
+            Análisis de suelo, plan de fertilización y manejo integrado de
+            plagas — respaldados por agrónomos certificados.
+          </p>
+        </motion.div>
+
+        {/* SLIDE 3 — Resultados */}
+        <motion.div
+          style={{ opacity: s3Opacity, y: s3Y }}
+          className="absolute inset-0 flex flex-col items-center justify-center text-center px-5 md:px-6"
+        >
+          <span
+            className="text-agro-200 text-[10px] sm:text-xs lg:text-sm font-semibold tracking-[0.3em] uppercase mb-4 sm:mb-6"
+            style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+          >
+            — Resultados que se cosechan
+          </span>
+          <h2
+            className="font-display text-[2.4rem] sm:text-5xl md:text-7xl lg:text-8xl text-cream leading-[1.1] sm:leading-[1.05] max-w-5xl"
+            style={{ textShadow: "0 4px 30px rgba(0,0,0,0.55)" }}
+          >
+            Más rendimiento.
+            <span className="block italic font-normal text-agro-200 mt-1 sm:mt-2">
+              Más cosecha asegurada.
+            </span>
+          </h2>
+          <p
+            className="mt-5 sm:mt-7 max-w-2xl text-cream/95 text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed"
+            style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+          >
+            Más de 5,200 productores ya forman parte de nuestra red en 14
+            sucursales del país.
+          </p>
         </motion.div>
 
         {/* Scroll cue */}
